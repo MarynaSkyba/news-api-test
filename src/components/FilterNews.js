@@ -3,6 +3,7 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import countries from "../contries";
 
 export default function FilterNews({
   filter,
@@ -13,16 +14,18 @@ export default function FilterNews({
   setCountry,
 }) {
   const [showCategory, setShowCategory] = useState(false);
+  const initialValue = countries.find((c) => c.code === country);
 
   const inputCategory = [
-    "business",
-    "entertainment",
-    "health",
-    "science",
-    "sports",
-    "technology",
+    "General",
+    "Business",
+    "Entertainment",
+    "Health",
+    "Science",
+    "Sports",
+    "Technology",
   ];
-  const countries = ["us", "gb", "ca", "au", "in"];
+  // const countries = ["us", "gb", "ca", "au", "in"];
 
   return (
     <>
@@ -51,7 +54,14 @@ export default function FilterNews({
                 id="filter"
                 placeholder="Search article"
                 value={filter}
-                style={{ paddingLeft: 40, paddingTop: 10, paddingBottom: 10, borderRadius: 10, borderColor: "#c8bebead", borderWidth: 1 }}
+                style={{
+                  paddingLeft: 40,
+                  paddingTop: 10,
+                  paddingBottom: 10,
+                  borderRadius: 10,
+                  borderColor: "#c8bebead",
+                  borderWidth: 1,
+                }}
                 onChange={(event) => handleFilterChange(event)}
               />
               <SearchIcon
@@ -92,13 +102,14 @@ export default function FilterNews({
             marginBottom: 20,
           }}
         >
-          <div>
-            <p>Category</p>
+          <div style={{ paddingRight: 30 }}>
+            <p style={{ marginBottom: 10 }}>Category</p>
             <Autocomplete
               disablePortal
-              disableInput
+              size="small"
+              disableClearable={true}
               options={inputCategory}
-              sx={{ width: 200, marginRight: 10 }}
+              sx={{ width: 200 }}
               value={category}
               onChange={(event, newValue) => setCategory(newValue)}
               renderInput={(params) => <TextField {...params} />}
@@ -106,14 +117,19 @@ export default function FilterNews({
           </div>
 
           <div>
-            <p>Country</p>
+            <p style={{ marginBottom: 10 }}>Country</p>
             <Autocomplete
               disablePortal
-              disableInput
+              size="small"
+              disableClearable={true}
               options={countries}
+              value={initialValue || null}
+              getOptionLabel={(option) => option.name}
+              isOptionEqualToValue={(option, value) =>
+                option.code === value.code
+              }
               sx={{ width: 200 }}
-              value={country}
-              onChange={(event, newValue) => setCountry(newValue)}
+              onChange={(event, newValue) => setCountry(newValue.code)}
               renderInput={(params) => <TextField {...params} />}
             />
           </div>

@@ -8,7 +8,7 @@ export default function Header() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: 80
+        height: 80,
       }}
     >
       <p

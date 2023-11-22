@@ -1,53 +1,101 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import LinkIcon from "@mui/icons-material/Link";
+import Box from "@mui/material/Box";
+import noImg from "../img/noimage.jpeg"
 
-const multiCell = {
-  padding: 30,
-};
+function TextCell({ value }) {
+  return (
+    <div>
+      {value
+        ? value.length > 100
+          ? value.slice(0, 90)
+          : value
+        : "No description"}
+      ...
+    </div>
+  );
+}
+
+function TitleCell({ value }) {
+  return (
+    <div>
+      {value ? (value.length > 90 ? value.slice(0, 70) : value) : "No title"}...
+    </div>
+  );
+}
+
 const columns = [
   {
     field: "image",
     headerName: "Image",
+    headerClassName: "super-app-theme--header",
     sortable: false,
-    width: 180,
-    renderCell: (params) => (
-      <div style={{ padding: 10 }}>
-        <img
-          src={params.value}
-          alt={`Image for ${params.row.title}`}
-          style={{ width: "100%", height: "100%", objectFit: "cover" }}
-        />
-      </div>
-    ),
+    flex: 2,
+
+    renderCell: (params) => {
+      const imageUrl = params.value;
+
+      if (imageUrl) {
+        return (
+          <div style={{ padding: 10 }}>
+            <img
+              src={imageUrl}
+              alt={`Image for ${params.row.title}`}
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          </div>
+        );
+      } else {
+        return (
+          <div style={{ padding: 10 }}>
+          <img
+              src={noImg}
+              alt="no image"
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          </div>
+        );
+      }
+    },
   },
   {
     field: "title",
     headerName: "Title",
-    width: 250,
-    align: "center",
+    headerClassName: "super-app-theme--header",
     sortable: false,
+    flex: 3,
+    renderCell: (params) => <TitleCell {...params} />,
   },
-  { field: "author", headerName: "Authors", width: 200, sortable: false },
+  {
+    field: "author",
+    headerClassName: "super-app-theme--header",
+    headerName: "Authors",
+    sortable: false,
+    flex: 2,
+  },
   {
     field: "description",
+    headerClassName: "super-app-theme--header",
     headerName: "Description",
     sortable: false,
-    width: 400,
-    cellClassName: "multiCell",
+    flex: 3,
+    renderCell: (params) => <TextCell {...params} />,
   },
   {
     field: "date",
+    headerClassName: "super-app-theme--header",
     headerName: "Publication date",
     sortable: false,
-    width: 100,
+    flex: 1,
   },
   {
     field: "url",
+    headerClassName: "super-app-theme--header",
     headerName: "Original URL",
     sortable: false,
-    width: 80,
+    flex: 1,
+
     renderCell: (params) => (
       <a
         href={params.value}
@@ -85,32 +133,35 @@ export default function TableNews({ articles }) {
 
   return (
     <div style={{ padding: "0 40px" }}>
-      <DataGrid
-        //   columns={columns}
-        columns={columns.map((column) => ({
-          ...column,
-          align: "center",
-          editable: false,
-        }))}
-        rows={rows.map((row) => ({
-          ...row,
-          align: "center",
-        }))}
-        // rows={rows}
-        pageSizeOptions={[5, 10]}
-        // rowHeight={120}
-        disableRowSelectionOnClick={true}
-        disableColumnMenu={true}
-        onRowClick={handleRowClick}
-        showCellVerticalBorder={true}
-        showColumnVerticalBorder={true}
-        autoHeight={true}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
+      <Box
+        sx={{
+          width: "100%",
+          "& .super-app-theme--header": {
+            backgroundColor: "#ECF0F6",
           },
         }}
-      />
+      >
+        <DataGrid
+          columns={columns.map((column) => ({
+            ...column,
+            align: "center",
+          }))}
+          rows={rows}
+          pageSizeOptions={[5, 10]}
+          getRowHeight={() => "auto"}
+          getEstimatedRowHeight={() => 100}
+          disableRowSelectionOnClick={true}
+          disableColumnMenu={true}
+          onRowClick={handleRowClick}
+          showCellVerticalBorder={true}
+          showColumnVerticalBorder={true}
+          initialState={{
+            pagination: {
+              paginationModel: { page: 0, pageSize: 5 },
+            },
+          }}
+        />
+      </Box>
     </div>
   );
 }

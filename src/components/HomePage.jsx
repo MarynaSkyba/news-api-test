@@ -5,17 +5,15 @@ import FilterNews from "./FilterNews";
 
 export default function HomePage() {
   const [articles, setArticles] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState("");
   const [country, setCountry] = useState("us");
-  const [category, setCategory] = useState("technology");
-  console.log("country", country);
+  const [category, setCategory] = useState("General");
 
   useEffect(() => {
-    fetchTopNews(country, currentPage, filter, category).then((data) => {
+    fetchTopNews(country, filter, category).then((data) => {
       setArticles(data);
     });
-  }, [currentPage, filter, category, country]);
+  }, [filter, category, country]);
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
@@ -24,7 +22,7 @@ export default function HomePage() {
   return (
     <>
       {articles && (
-        <div style={{flex: 1}}>
+        <div style={{ flex: 1 }}>
           <FilterNews
             filter={filter}
             handleFilterChange={handleFilterChange}
