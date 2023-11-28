@@ -1,26 +1,23 @@
 import React from "react";
+import { Box, Typography } from "@mui/material";
 
 export default function Header() {
   return (
-    <div
-      style={{
-        backgroundColor: "black",
+    <Box
+      sx={{
+        bgcolor: "primary.dark",
+        height: "80px",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: 80,
       }}
     >
-      <p
-        style={{
-          fontSize: 30,
-          color: "#fff",
-          fontWeight: 700,
-          textTransform: "uppercase",
-        }}
+      <Typography
+        variant="h4"
+        sx={{ color: "primary.light", textTransform: "uppercase" }}
       >
         Formula
-      </p>
-    </div>
+      </Typography>
+    </Box>
   );
 }

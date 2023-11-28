@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
+import { Typography, Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
+import CircularProgress from "@mui/material/CircularProgress";
 import LinkIcon from "@mui/icons-material/Link";
-import Box from "@mui/material/Box";
-import noImg from "../img/noimage.jpeg"
+import noImg from "../img/noimage.jpeg";
 
 function TextCell({ value }) {
   return (
@@ -19,9 +20,18 @@ function TextCell({ value }) {
 
 function TitleCell({ value }) {
   return (
-    <div>
+    <Typography variant="body2">
       {value ? (value.length > 90 ? value.slice(0, 70) : value) : "No title"}...
-    </div>
+    </Typography>
+  );
+}
+
+function AuthorCell({ value }) {
+  return (
+    <Typography variant="body2">
+      {value ? (value.length > 90 ? value.slice(0, 70) : value) : "No Authors"}
+      ...
+    </Typography>
   );
 }
 
@@ -38,23 +48,23 @@ const columns = [
 
       if (imageUrl) {
         return (
-          <div style={{ padding: 10 }}>
+          <Box style={{ padding: 10 }}>
             <img
               src={imageUrl}
               alt={`Image for ${params.row.title}`}
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
             />
-          </div>
+          </Box>
         );
       } else {
         return (
-          <div style={{ padding: 10 }}>
-          <img
+          <Box style={{ padding: 10 }}>
+            <img
               src={noImg}
               alt="no image"
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
             />
-          </div>
+          </Box>
         );
       }
     },
@@ -73,6 +83,7 @@ const columns = [
     headerName: "Authors",
     sortable: false,
     flex: 2,
+    renderCell: (params) => <AuthorCell {...params} />,
   },
   {
     field: "description",
@@ -87,14 +98,14 @@ const columns = [
     headerClassName: "super-app-theme--header",
     headerName: "Publication date",
     sortable: false,
-    flex: 1,
+    flex: 1.5,
   },
   {
     field: "url",
     headerClassName: "super-app-theme--header",
     headerName: "Original URL",
     sortable: false,
-    flex: 1,
+    flex: 1.2,
 
     renderCell: (params) => (
       <a
@@ -109,7 +120,7 @@ const columns = [
   },
 ];
 
-export default function TableNews({ articles }) {
+export default function TableNews({ articles, loading }) {
   const navigate = useNavigate();
 
   const rows = articles.map((article, index) => ({
@@ -131,37 +142,53 @@ export default function TableNews({ articles }) {
     });
   };
 
-  return (
-    <div style={{ padding: "0 40px" }}>
-      <Box
-        sx={{
-          width: "100%",
-          "& .super-app-theme--header": {
-            backgroundColor: "#ECF0F6",
-          },
-        }}
-      >
-        <DataGrid
-          columns={columns.map((column) => ({
-            ...column,
-            align: "center",
-          }))}
-          rows={rows}
-          pageSizeOptions={[5, 10]}
-          getRowHeight={() => "auto"}
-          getEstimatedRowHeight={() => 100}
-          disableRowSelectionOnClick={true}
-          disableColumnMenu={true}
-          onRowClick={handleRowClick}
-          showCellVerticalBorder={true}
-          showColumnVerticalBorder={true}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
+  return loading ? (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        color: "secondary.main",
+      }}
+    >
+      <CircularProgress color="inherit" size={80} />
+    </Box>
+  ) : (
+    <Box style={{ padding: "0 40px" }}>
+      {rows.length === 0 ? (
+        <Typography variant="h4" align="center">
+          No articles available. Try another search
+        </Typography>
+      ) : (
+        <Box
+          sx={{
+            width: "100%",
+            "& .super-app-theme--header": {
+              backgroundColor: "primary.main",
             },
           }}
-        />
-      </Box>
-    </div>
+        >
+          <DataGrid
+            columns={columns.map((column) => ({
+              ...column,
+              align: "center",
+            }))}
+            rows={rows}
+            pageSizeOptions={[5, 10]}
+            getRowHeight={() => "auto"}
+            getEstimatedRowHeight={() => 100}
+            disableRowSelectionOnClick={true}
+            disableColumnMenu={true}
+            onRowClick={handleRowClick}
+            showCellVerticalBorder={true}
+            showColumnVerticalBorder={true}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 5 },
+              },
+            }}
+          />
+        </Box>
+      )}
+    </Box>
   );
 }

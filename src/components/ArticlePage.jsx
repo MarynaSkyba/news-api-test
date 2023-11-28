@@ -1,4 +1,5 @@
 import React from "react";
+import { Box, Typography } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import noImage from "../img/noimage.jpeg";
@@ -14,71 +15,85 @@ export default function ArticlePage() {
   };
 
   return (
-    <div>
-      <div style={{ padding: 40 }}>
-        <div
-          style={{
+    <Box>
+      <Box style={{ padding: 40 }}>
+        <Box
+          sx={{
             display: "flex",
             justifyContent: "flex-start",
             alignItems: "center",
             alignContent: "center",
-            paddingBottom: 20,
+            paddingBottom: 5,
           }}
         >
           <ArrowBackIcon onClick={onGoBack} />
-          <h2 style={{ marginLeft: 10, fontSize: 20 }}>{title}</h2>
-        </div>
+          <Typography variant="h3" sx={{ marginLeft: 2, fontSize: 20 }}>
+            {title}
+          </Typography>
+        </Box>
 
-        <div
-          style={{
+        <Box
+          sx={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            color: " grey",
+            color: "secondary.main",
             fontSize: 15,
-            paddingBottom: 20,
+            paddingBottom: 3,
           }}
         >
-          <p> Source : {source}</p>
-          <p>Publication date {date}</p>
-        </div>
+          <Typography variant="body1"> Source : {source}</Typography>
+          <Typography variant="body1">Publication date {date}</Typography>
+        </Box>
 
-        <p style={{ fontWeight: 700, paddingBottom: 10 }}>Description</p>
+        <Typography variant="h5" gutterBottom>
+          Description
+        </Typography>
         {description ? (
-          <p style={{ paddingBottom: 20 }}>{description}</p>
+          <Typography variant="body1" gutterBottom>
+            {description}
+          </Typography>
         ) : (
-          <p>No description available</p>
+          <Typography>No description available</Typography>
         )}
-      </div>
+      </Box>
 
       {image ? (
         <img src={image} alt={title} style={{ width: "100%", margin: 0 }} />
       ) : (
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <Box style={{ display: "flex", justifyContent: "center" }}>
           <img src={noImage} alt="My Image" />
-        </div>
+        </Box>
       )}
 
-      <div style={{ padding: 40 }}>
-        <p style={{ fontWeight: 700, paddingBottom: 10 }}>Content</p>
+      <Box style={{ padding: 40 }}>
+        <Typography variant="h5" gutterBottom>
+          Content
+        </Typography>
         {content ? (
-          <p style={{ paddingBottom: 30 }}>{content}</p>
+          <Typography variant="body1" gutterBottom>
+            {content}
+          </Typography>
         ) : (
-          <p>No content available</p>
+          <Typography variant="body1" gutterBottom>
+            No content available
+          </Typography>
         )}
-        <p
-          style={{
+        <Typography
+          variant="h5"
+          gutterBottom
+          sx={{
             borderTopColor: "#c8bebead",
             borderTopStyle: "solid",
             borderTopWidth: 1,
-            paddingTop: 10,
-            color: "grey",
+            paddingTop: 1,
+            color: "secondary.main",
             fontSize: 15,
           }}
         >
           Authours: {author}
-        </p>
-      </div>
-    </div>
+        </Typography>
+      </Box>
+    </Box>
   );
 }

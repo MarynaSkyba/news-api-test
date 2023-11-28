@@ -1,27 +1,36 @@
 import React from "react";
 import EmailIcon from "@mui/icons-material/Email";
+import { Box, Typography } from "@mui/material";
 
 export default function Footer() {
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
         padding: " 10px 40px",
         marginTop: 10,
-        borderTopColor: "#c8bebead",
+        borderTopColor: "primary.main",
         borderTopWidth: 2,
         borderTopStyle: "solid",
+        "& Typography": {
+          fontSize: 25,
+        },
       }}
     >
-      <div>
-        <p style={{ fontSize: 25, color: "grey", marginBottom: 10 }}>Formula</p>
-        <p style={{ fontSize: 15, color: "grey" }}>
+      <Box>
+        <Typography variant="h6" sx={{ color: "secondary.main" }} gutterBottom>
+          Formula
+        </Typography>
+        <Typography
+          variant="subtitle2"
+          sx={{ fontSize: 15, color: "secondary.main" }}
+        >
           &copy; Formula 2023. All Rights Reserved
-        </p>
-      </div>
-      <div
+        </Typography>
+      </Box>
+      <Box
         style={{
           display: "flex",
           justifyContent: "center",
@@ -29,10 +38,18 @@ export default function Footer() {
         }}
       >
         <EmailIcon style={{ color: "grey" }} />
-        <p style={{ fontSize: 15, color: "grey", marginLeft: 10 }}>
-          info@formula.com
-        </p>
-      </div>
-    </div>
+
+        <Typography
+          sx={{ fontSize: 15, color: "secondary.main", marginLeft: 2 }}
+        >
+          <a
+            href="mailto:info@formula.com"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            info@formula.com
+          </a>
+        </Typography>
+      </Box>
+    </Box>
   );
 }

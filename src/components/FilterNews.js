@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Box, Button, useTheme, Typography, Stack } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import SearchIcon from "@mui/icons-material/Search";
@@ -15,6 +16,7 @@ export default function FilterNews({
 }) {
   const [showCategory, setShowCategory] = useState(false);
   const initialValue = countries.find((c) => c.code === country);
+  const theme = useTheme();
 
   const inputCategory = [
     "General",
@@ -25,30 +27,31 @@ export default function FilterNews({
     "Sports",
     "Technology",
   ];
-  // const countries = ["us", "gb", "ca", "au", "in"];
 
   return (
     <>
-      <div
+      <Box
         style={{
-          padding: 40,
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          padding: 40,
         }}
       >
-        <div>
-          <p style={{ fontSize: 30 }}>Formula Top Headlines</p>
-        </div>
-        <div
-          style={{
+        <Box>
+          <Typography variant="h4" style={{ fontSize: 30 }}>
+            Formula Top Headlines
+          </Typography>
+        </Box>
+        <Box
+          sx={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <div style={{ position: "relative" }}>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box sx={{ position: "relative" }}>
               <input
                 type="text"
                 id="filter"
@@ -59,7 +62,7 @@ export default function FilterNews({
                   paddingTop: 10,
                   paddingBottom: 10,
                   borderRadius: 10,
-                  borderColor: "#c8bebead",
+                  borderColor: theme.palette.secondary.main,
                   borderWidth: 1,
                 }}
                 onChange={(event) => handleFilterChange(event)}
@@ -73,27 +76,34 @@ export default function FilterNews({
                   cursor: "pointer",
                 }}
               />
-            </div>
-            <button
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: 10,
-                padding: 5,
-                borderColor: "transparent",
-                marginLeft: 10,
-              }}
-              onClick={() => setShowCategory(!showCategory)}
-            >
-              <FilterAltIcon />
-              Filters
-            </button>
-          </div>
-        </div>
-      </div>
+            </Box>
+          </Box>
+
+          <Button
+            startIcon={<FilterAltIcon />}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 10,
+              padding: 8,
+              borderColor: "transparent",
+              color: theme.palette.primary.dark,
+              marginLeft: 10,
+              backgroundColor: theme.palette.primary.main,
+              textTransform: "none",
+            }}
+            onClick={() => setShowCategory(!showCategory)}
+          >
+            Filters
+          </Button>
+        </Box>
+      </Box>
+
       {showCategory && (
-        <div
+        <Stack
+          spacing={2}
+          direction="row"
           style={{
             display: "flex",
             justifyContent: "flex-start",
@@ -102,8 +112,10 @@ export default function FilterNews({
             marginBottom: 20,
           }}
         >
-          <div style={{ paddingRight: 30 }}>
-            <p style={{ marginBottom: 10 }}>Category</p>
+          <Box style={{ paddingRight: 30 }}>
+            <Typography variant="subtitle1" gutterBottom>
+              Category
+            </Typography>
             <Autocomplete
               disablePortal
               size="small"
@@ -114,10 +126,13 @@ export default function FilterNews({
               onChange={(event, newValue) => setCategory(newValue)}
               renderInput={(params) => <TextField {...params} />}
             />
-          </div>
+          </Box>
 
-          <div>
-            <p style={{ marginBottom: 10 }}>Country</p>
+          <Box>
+            <Typography variant="subtitle1" gutterBottom>
+              Country
+            </Typography>
+
             <Autocomplete
               disablePortal
               size="small"
@@ -132,8 +147,8 @@ export default function FilterNews({
               onChange={(event, newValue) => setCountry(newValue.code)}
               renderInput={(params) => <TextField {...params} />}
             />
-          </div>
-        </div>
+          </Box>
+        </Stack>
       )}
     </>
   );
